@@ -13,4 +13,5 @@ double length(double x, double y){
 }
 
 
+
 #endif /* texture_generation_h */

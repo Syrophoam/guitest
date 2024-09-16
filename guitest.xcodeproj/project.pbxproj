@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		527128C42C954788000E16A2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 527128C32C954788000E16A2 /* main.cpp */; };
+		52712D022C97BE05000E16A2 /* cbmp.c in Sources */ = {isa = PBXBuildFile; fileRef = 52712CFE2C97BE05000E16A2 /* cbmp.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,16 +26,14 @@
 /* Begin PBXFileReference section */
 		527128C02C954788000E16A2 /* guitest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guitest; sourceTree = BUILT_PRODUCTS_DIR; };
 		527128C32C954788000E16A2 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		527128CA2C967AC3000E16A2 /* colourful.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = colourful.bmp; sourceTree = "<group>"; };
 		527128CB2C968883000E16A2 /* Media.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Media.txt; sourceTree = "<group>"; };
-		527128CC2C96959C000E16A2 /* w3c_home_2.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = w3c_home_2.bmp; sourceTree = "<group>"; };
-		527128DC2C969EE0000E16A2 /* bitmap_image.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bitmap_image.hpp; sourceTree = "<group>"; };
-		527128DD2C969EE0000E16A2 /* bitmap_test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bitmap_test.cpp; sourceTree = "<group>"; };
-		527128DE2C969EE0000E16A2 /* bitmap.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = bitmap.xcodeproj; sourceTree = "<group>"; };
-		527128DF2C969EE0000E16A2 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
-		527128E52C96A063000E16A2 /* checker.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = checker.bmp; sourceTree = "<group>"; };
 		527128E62C971210000E16A2 /* texture-generation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "texture-generation.h"; sourceTree = "<group>"; };
 		527128E72C973BDE000E16A2 /* ToDo.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ToDo.md; sourceTree = "<group>"; };
+		527128ED2C97AD7C000E16A2 /* checkGimp.bmp */ = {isa = PBXFileReference; explicitFileType = text; path = checkGimp.bmp; sourceTree = "<group>"; };
+		52712CFE2C97BE05000E16A2 /* cbmp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cbmp.c; sourceTree = "<group>"; };
+		52712CFF2C97BE05000E16A2 /* cbmp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cbmp.h; sourceTree = "<group>"; };
+		52712D002C97BE05000E16A2 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		52712D032C97BE30000E16A2 /* image.bmp */ = {isa = PBXFileReference; explicitFileType = text; path = image.bmp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,34 +67,24 @@
 		527128C22C954788000E16A2 /* guitest */ = {
 			isa = PBXGroup;
 			children = (
-				527128E02C969EE0000E16A2 /* bitmap */,
+				52712D032C97BE30000E16A2 /* image.bmp */,
 				527128C32C954788000E16A2 /* main.cpp */,
+				527128ED2C97AD7C000E16A2 /* checkGimp.bmp */,
 				527128E62C971210000E16A2 /* texture-generation.h */,
-				527128E52C96A063000E16A2 /* checker.bmp */,
 				527128CB2C968883000E16A2 /* Media.txt */,
-				527128CA2C967AC3000E16A2 /* colourful.bmp */,
-				527128CC2C96959C000E16A2 /* w3c_home_2.bmp */,
+				52712D012C97BE05000E16A2 /* cbmp */,
 			);
 			path = guitest;
 			sourceTree = "<group>";
 		};
-		527128E02C969EE0000E16A2 /* bitmap */ = {
+		52712D012C97BE05000E16A2 /* cbmp */ = {
 			isa = PBXGroup;
 			children = (
-				527128DC2C969EE0000E16A2 /* bitmap_image.hpp */,
-				527128DD2C969EE0000E16A2 /* bitmap_test.cpp */,
-				527128DE2C969EE0000E16A2 /* bitmap.xcodeproj */,
-				527128DF2C969EE0000E16A2 /* Makefile */,
+				52712CFE2C97BE05000E16A2 /* cbmp.c */,
+				52712CFF2C97BE05000E16A2 /* cbmp.h */,
+				52712D002C97BE05000E16A2 /* CMakeLists.txt */,
 			);
-			name = bitmap;
-			path = ../../../../Downloads/bitmap;
-			sourceTree = "<group>";
-		};
-		527128E12C969EE0000E16A2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Products;
+			path = cbmp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -143,12 +132,6 @@
 			mainGroup = 527128B72C954788000E16A2;
 			productRefGroup = 527128C12C954788000E16A2 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 527128E12C969EE0000E16A2 /* Products */;
-					ProjectRef = 527128DE2C969EE0000E16A2 /* bitmap.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				527128BF2C954788000E16A2 /* guitest */,
@@ -161,6 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52712D022C97BE05000E16A2 /* cbmp.c in Sources */,
 				527128C42C954788000E16A2 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

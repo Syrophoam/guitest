@@ -26,13 +26,6 @@ struct vec2 {
     int y;
 };
 
-struct pixelData{
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
-};
-
-const char* grayScale[] = {"$","@","B","%","8","&","W","M","#","*","o","a","h","k","b","d","p","q","w","m","Z","O","0","Q","L","C","J","U","Y","X","z","c","v","u","n","x","r","j","f","t","/","|","(",")","1","{","}","[","]","?","-","_","+","~","<",">","i","!","l","I",";",":",",","^","`","."," "};
 
 double normalize(double uvCoordx, double uvCoordy, int row, int col, double aspectRatio){
     struct UV uvCoords;
@@ -74,7 +67,7 @@ int main() {
     int row = ws.ws_row;
     int col = ws.ws_col;
     
-    BMP *bmpImage = bopen("/Users/syro/Desktop/xcode/guitest/guitest/Doom_logoResize.bmp");
+    BMP *bmpImage = bopen("/Users/syro/Desktop/xcode/guitest/guitest/AFX.bmp");
   
     const int width = get_width(bmpImage);
     const int height = get_height(bmpImage);
@@ -83,6 +76,7 @@ int main() {
     pixelData pixDat[width][height];
 
     vector< vector<uint8_t> > xy(width,std::vector<uint8_t>(height));
+    std::vector<std::vector<pixelData>> pixDatVec(width,std::vector<pixelData>(height));
     
     
     unsigned char r;
@@ -101,11 +95,11 @@ int main() {
             pixDat[i][j].r = r;
             pixDat[i][j].g = g;
             pixDat[i][j].b = b;
+            pixDatVec[i][j].r = r;
+            pixDatVec[i][j].g = g;
+            pixDatVec[i][j].b = b;
         }
     }
-    
-    struct UV UVcoords;
-    struct vec2 intensity;
     
     /* testing \/ */
     if ((row == 0) && (col == 0)) {
@@ -117,10 +111,10 @@ int main() {
    
     int frameCount = 0;
     int mult;
-    int pixel;
+    
     int fps = 5;  // at 200000000 nano seconds per cycle;
         fps = 20; // at 50000000;
-    int frame = 0;
+    
     
     while (running) {
         frameCount++;
@@ -132,14 +126,14 @@ int main() {
             exit(1);
         }
         row = ws.ws_row;
-        col = ws.ws_col/4;
+        col = ws.ws_col;
         
         
         int xPix = ws.ws_xpixel;
         int yPix = ws.ws_ypixel;
-//        xPix = 400;
-//        yPix = 200;
+
         double aspectRatio = double(xPix)/double(yPix);
+        
         
         if ((row == 0) && (col == 0)) {
             row = 24;
@@ -149,43 +143,21 @@ int main() {
         UV scale;
         scale.x = double(xPix)/double(width);
         scale.y = double(yPix)/double(height);
-        //off by one error somewhere #ugh
-        
-        // yIndex ranges from 0 - height
-        // i      ranges from 0 - row
-        
-        int yIndex = 0;
-        int xIndex = 0;
-        
-        for (int i = 0; i < row; i++) { // height (a)
-            UVcoords.y = double(i);
-            normalize(-1, UVcoords.y, row, col, aspectRatio);
-            
-            double scaleY = double(i) / (double(col)/double(width));
-            scaleY /= 2;
-            yIndex = scaleY;
-            
+   
+        for (int i = 0; i < row*2; i+=2) { // height (a)
             for (int j = 0; j < col; j++) { // width
-                UVcoords.x = double(j);
-                normalize(UVcoords.x, -1, row, col, aspectRatio);
-                double scaleX = double(j) / (double(col)/double(width));
-                xIndex = scaleX;
-                
-                if (pixDat[xIndex][yIndex].r > 0) {
-                    frame += "    ";
-                }else{
-                    frame += "DOOM";
-                }
-                
+
             }
             frame += '\n';
         }
-            
-            std::cout << frame;
+        
+        std::string frameGen = bitMapView(row, col, height, width, pixDatVec);
+        
+        std::cout << frameGen;
         
         //cout << "\033[1;32mbold red text\033[0m\n";
         
-            destroy(frame.begin(), frame.end());
+            destroy(frameGen.begin(), frameGen.end());
             
             struct timespec tim;
             tim.tv_nsec = 50000000;

@@ -4,14 +4,15 @@
 #include <sys/ioctl.h>
 #include <string.h>
 #include <errno.h>
-#include <unistd.h>
+#include <unistd.h> // surely i dont need all these
 #include <vector>
 #include <chrono>
 #include <math.h>
-
 #include <fstream>
+
 #include "texture-generation.h"
 #include "cbmp.h"
+
 
 using namespace std;
 
@@ -54,6 +55,10 @@ double normalize(double uvCoordx, double uvCoordy, int row, int col, double aspe
     
 }
 
+int scale(int value, int initMin, int initMax, int newMin, int newMax){
+    //implrement
+    return 0;
+}
 
 int main() {
     bool testing = false;
@@ -69,13 +74,16 @@ int main() {
     int row = ws.ws_row;
     int col = ws.ws_col;
     
-    BMP *bmpImage = bopen(("/Users/syro/Desktop/xcode/guitest/guitest/checkGimp.bmp"));
+    BMP *bmpImage = bopen("/Users/syro/Desktop/xcode/guitest/guitest/Doom_logoResize.bmp");
   
     const int width = get_width(bmpImage);
     const int height = get_height(bmpImage);
     
     
-    pixelData pixDat[width*height];
+    pixelData pixDat[width][height];
+
+    vector< vector<uint8_t> > xy(width,std::vector<uint8_t>(height));
+    
     
     unsigned char r;
     unsigned char g;
@@ -90,9 +98,9 @@ int main() {
             r = bmpImage->pixels[index].red;
             g = bmpImage->pixels[index].green;
             b = bmpImage->pixels[index].blue;
-            pixDat[index].r = r;
-            pixDat[index].g = g;
-            pixDat[index].b = b;
+            pixDat[i][j].r = r;
+            pixDat[i][j].g = g;
+            pixDat[i][j].b = b;
         }
     }
     
@@ -124,68 +132,59 @@ int main() {
             exit(1);
         }
         row = ws.ws_row;
-        col = ws.ws_col;
+        col = ws.ws_col/4;
+        
+        
         int xPix = ws.ws_xpixel;
         int yPix = ws.ws_ypixel;
+//        xPix = 400;
+//        yPix = 200;
         double aspectRatio = double(xPix)/double(yPix);
         
         if ((row == 0) && (col == 0)) {
             row = 24;
             col = 80;
         }
+      
+        UV scale;
+        scale.x = double(xPix)/double(width);
+        scale.y = double(yPix)/double(height);
+        //off by one error somewhere #ugh
         
-        float animation = 0;
-        if(frameCount > 50){
+        // yIndex ranges from 0 - height
+        // i      ranges from 0 - row
+        
+        int yIndex = 0;
+        int xIndex = 0;
+        
+        for (int i = 0; i < row; i++) { // height (a)
+            UVcoords.y = double(i);
+            normalize(-1, UVcoords.y, row, col, aspectRatio);
             
-            destroy(frame.begin(), frame.end());
-            std::string frame;
-            for (int k = 0; k < row; k++) {
-                for (int l = 0; l < col; l++) {
-                    frame += "@";
-                }
-            }
-            std::string name;
-            std::cout << "Name?" << '\n';
-            std::cin >> name;
-            if (name == "World") {
-                std::cout << "Hello World";
-                return 1;
-            }
-        }else{
+            double scaleY = double(i) / (double(col)/double(width));
+            scaleY /= 2;
+            yIndex = scaleY;
             
-            for (int i = 0; i < row; i++) {
-                UVcoords.y = double(i);
-                UVcoords.y = normalize(-1,UVcoords.y,row, col, aspectRatio);
-
-                for (int j = 0; j < col; j++) {
-                    UVcoords.x = double(j);
-                    UVcoords.x = normalize(UVcoords.x,-1,row, col, aspectRatio);
-                    
-                    float length = sqrt(pow(UVcoords.x,2)+pow(UVcoords.y,2));
-                    animation = sin((length * M_2_PI * 3) + float(frameCount)/100);
-                    animation = animation * 0.5 + 0.5;
-                    animation *= 66;
-                    
-                    
-                    animation *= double(abs(frameCount-50))/50;
-                    
-                    if(frameCount > 50){
-                        destroy(frame.begin(), frame.end());
-                        std::string frame;
-                        for (int k = 0; k < row; k++) {
-                            for (int l = 0; l < col; l++) {
-                                frame += "@";
-                            }
-                        }
-                    }else{
-                        frame += grayScale[ int(animation)%66 ];
-                    }
-                    
+            for (int j = 0; j < col; j++) { // width
+                UVcoords.x = double(j);
+                normalize(UVcoords.x, -1, row, col, aspectRatio);
+                double scaleX = double(j) / (double(col)/double(width));
+                xIndex = scaleX;
+                
+                if (pixDat[xIndex][yIndex].r > 0) {
+                    frame += "    ";
+                }else{
+                    frame += "DOOM";
                 }
-                frame += "\n";
+                
             }
+            frame += '\n';
+        }
             
             std::cout << frame;
+        
+        //cout << "\033[1;32mbold red text\033[0m\n";
+        
             destroy(frame.begin(), frame.end());
             
             struct timespec tim;
@@ -193,7 +192,7 @@ int main() {
             
             nanosleep(&tim, NULL);
      
-        }
+        
     }
 
   return 0 ;

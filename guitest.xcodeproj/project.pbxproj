@@ -33,7 +33,8 @@
 		52712CFE2C97BE05000E16A2 /* cbmp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cbmp.c; sourceTree = "<group>"; };
 		52712CFF2C97BE05000E16A2 /* cbmp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cbmp.h; sourceTree = "<group>"; };
 		52712D002C97BE05000E16A2 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
-		52712D032C97BE30000E16A2 /* image.bmp */ = {isa = PBXFileReference; explicitFileType = text; path = image.bmp; sourceTree = "<group>"; };
+		52712D032C97BE30000E16A2 /* image.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = image.bmp; sourceTree = "<group>"; };
+		52712D042C97F2DB000E16A2 /* Doom_logo.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = Doom_logo.bmp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +68,7 @@
 		527128C22C954788000E16A2 /* guitest */ = {
 			isa = PBXGroup;
 			children = (
+				52712D042C97F2DB000E16A2 /* Doom_logo.bmp */,
 				52712D032C97BE30000E16A2 /* image.bmp */,
 				527128C32C954788000E16A2 /* main.cpp */,
 				527128ED2C97AD7C000E16A2 /* checkGimp.bmp */,

@@ -11,49 +11,9 @@
 #include <fstream>
 
 #include "texture-generation.h"
-#include "cbmp.h"
-
-
-using namespace std;
-
-struct UV {
-    double x;
-    double y;
-};
-
-struct vec2 {
-    int x;
-    int y;
-};
-
-
-double normalize(double uvCoordx, double uvCoordy, int row, int col, double aspectRatio){
-    struct UV uvCoords;
-        uvCoords.x = uvCoordx;
-        uvCoords.y = uvCoordy;
-    
-    if (uvCoordy > -1) {
-        uvCoords.y /= float(row);
-        uvCoords.y = uvCoords.y * 2 - 1;
-        return uvCoords.y;
-    }
-    
-    if (uvCoordx > -1) {
-        uvCoords.x /= float(col);
-        uvCoords.x = uvCoords.x * 2 - 1;
-        uvCoords.x *= aspectRatio;
-        return uvCoords.x;
-    }
-    return  -1;
-    
-}
-
-int scale(int value, int initMin, int initMax, int newMin, int newMax){
-    //implrement
-    return 0;
-}
 
 int main() {
+    std::cout << "\e[8;48;160t"; //set terminal size ?
     bool testing = false;
     
     struct winsize ws;
@@ -67,58 +27,38 @@ int main() {
     int row = ws.ws_row;
     int col = ws.ws_col;
     
-    BMP *bmpImage = bopen("/Users/syro/Desktop/xcode/guitest/guitest/AFX.bmp");
-  
-    const int width = get_width(bmpImage);
-    const int height = get_height(bmpImage);
+    BMP *bmpLogo = bopen("/Users/syro/Desktop/xcode/guitest/guitest/bitmap/Logo.bmp");
+    
+    std::vector<int> logoSize = getImageDimensions(bmpLogo);
+    int widthLogo = logoSize[0];
+    int heightLogo = logoSize[1];
+    
+    std::vector<std::vector<pixelData>> logodata(widthLogo,std::vector<pixelData>(heightLogo));
+    logodata = getImageData(bmpLogo, widthLogo, heightLogo);
+    
+    bclose(bmpLogo);
+    
+    BMP *bmpMapFull = bopen("/Users/syro/Desktop/xcode/guitest/guitest/mapBmp.bmp");
+    
+    std::vector<int> mapSize = getImageDimensions(bmpMapFull);
+    int widthMapFull = mapSize[0];
+    int heightMapFull = mapSize[1];
+    
+    std::vector<std::vector<pixelData>> mapData(widthMapFull,std::vector<pixelData>(heightMapFull));
+    mapData = getImageData(bmpMapFull, widthMapFull, heightMapFull);
     
     
-    pixelData pixDat[width][height];
-
-    vector< vector<uint8_t> > xy(width,std::vector<uint8_t>(height));
-    std::vector<std::vector<pixelData>> pixDatVec(width,std::vector<pixelData>(height));
     
     
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
-    int index = 0;
-    for (int i = 0; i < width; i++) {
-        for (int j = 0; j < height; j++) {
-            index++;
-            int x = i;
-            int y = j;
-            int index = y * bmpImage->width + x;
-            r = bmpImage->pixels[index].red;
-            g = bmpImage->pixels[index].green;
-            b = bmpImage->pixels[index].blue;
-            pixDat[i][j].r = r;
-            pixDat[i][j].g = g;
-            pixDat[i][j].b = b;
-            pixDatVec[i][j].r = r;
-            pixDatVec[i][j].g = g;
-            pixDatVec[i][j].b = b;
-        }
-    }
-    
-    /* testing \/ */
-    if ((row == 0) && (col == 0)) {
-        row = 24;
-        col = 80;
-        testing = true;
-    }
-    
-   
     int frameCount = 0;
-    int mult;
     
     int fps = 5;  // at 200000000 nano seconds per cycle;
         fps = 20; // at 50000000;
-    
+    int currentDisplay = 0;
     
     while (running) {
         frameCount++;
-        mult = frameCount%20;
+       
         std::string frame;
         
         if( ioctl( 0, TIOCGWINSZ, &ws ) != 0 ){
@@ -128,42 +68,78 @@ int main() {
         row = ws.ws_row;
         col = ws.ws_col;
         
-        
         int xPix = ws.ws_xpixel;
         int yPix = ws.ws_ypixel;
 
         double aspectRatio = double(xPix)/double(yPix);
-        
-        
-        if ((row == 0) && (col == 0)) {
-            row = 24;
-            col = 80;
-        }
-      
-        UV scale;
-        scale.x = double(xPix)/double(width);
-        scale.y = double(yPix)/double(height);
-   
-        for (int i = 0; i < row*2; i+=2) { // height (a)
-            for (int j = 0; j < col; j++) { // width
 
+        switch (currentDisplay) {
+            case 0:{ // loading screen
+                setTransform(1., 1., 0, 0);
+                std::string frameGen = bitMapView(row, col, heightLogo, widthLogo, logodata, aspectRatio ,1.);
+                std::cout << frameGen;
+                
+                std::string anyKey;
+                if (frameCount > 5) {
+                    std::cout << "press the 'any' key to continue";
+                    std::cin >> anyKey;
+                    currentDisplay = 1;
+                    //destroy(frameGen.begin(),frameGen.end());
+                }
+                break;
             }
-            frame += '\n';
+                
+            case 1:{
+                std::string mapFrame;
+                
+                int divisions = 4;
+                int lat;
+                
+//                int pos = -(col)/2;
+//                
+//                for (int i = pos; i < (col*2)+1; i+= 3) {
+//                    
+//                    if ( (i%(col/divisions)) == 0 ) {
+//                        mapFrame += "@";
+//                        lat = i;
+//                        mapFrame += std::to_string(lat);
+//                        
+//                    }else{
+//                        mapFrame += "   ";
+//                    }
+//                    if(i == 0){
+//                        i++;
+//                    }
+//                    
+//                }
+                
+//                setTransform(1., 1., 0, 4);
+               // mapFrame += bitMapView(row-6, col, heightMapFull, widthMapFull, mapData, aspectRatio ,.8);
+                mapFrame += bitMapView(row, col, heightMapFull, widthMapFull, mapData, aspectRatio ,.8);
+//                for (int i = 0; i < (col*2); i++) {
+//                    mapFrame += "O";
+//                }
+                
+                
+                std::cout << mapFrame;
+                std::cout << "Enter longitude \n";
+                double lon;
+                std::cin >> lon;
+                currentDisplay = 1;
+                break;
+            }
+                //case so on and so fourth
+                
+            default:
+                break;
         }
-        
-        std::string frameGen = bitMapView(row, col, height, width, pixDatVec);
-        
-        std::cout << frameGen;
-        
-        //cout << "\033[1;32mbold red text\033[0m\n";
-        
-            destroy(frameGen.begin(), frameGen.end());
-            
+
+
             struct timespec tim;
             tim.tv_nsec = 50000000;
             
             nanosleep(&tim, NULL);
-     
+            
         
     }
 

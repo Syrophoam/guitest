@@ -36,6 +36,8 @@
 		52712D032C97BE30000E16A2 /* image.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = image.bmp; sourceTree = "<group>"; };
 		52712D042C97F2DB000E16A2 /* Doom_logo.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = Doom_logo.bmp; sourceTree = "<group>"; };
 		52712D052C983C38000E16A2 /* AFX.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = AFX.bmp; sourceTree = "<group>"; };
+		52712D062C988C9A000E16A2 /* Logo.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Logo.bmp; path = bitmap/Logo.bmp; sourceTree = "<group>"; };
+		52712D3E2C99C692000E16A2 /* mapBmp.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = mapBmp.bmp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,8 @@
 		527128C22C954788000E16A2 /* guitest */ = {
 			isa = PBXGroup;
 			children = (
+				52712D3E2C99C692000E16A2 /* mapBmp.bmp */,
+				52712D062C988C9A000E16A2 /* Logo.bmp */,
 				52712D052C983C38000E16A2 /* AFX.bmp */,
 				52712D042C97F2DB000E16A2 /* Doom_logo.bmp */,
 				52712D032C97BE30000E16A2 /* image.bmp */,
